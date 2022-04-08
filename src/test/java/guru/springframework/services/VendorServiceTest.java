@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import com.sun.xml.bind.v2.model.core.ID;
 import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.VendorDTO;
 import guru.springframework.domain.Vendor;
@@ -15,10 +16,14 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 
 public class VendorServiceTest {
 
+    public static final String VENDOR = "Kratos Test Vendor";
+    public static final Long VENDOR_ID = 1L;
     VendorService vendorService;
 
     @Mock
@@ -43,5 +48,21 @@ public class VendorServiceTest {
 
         //then
         assertEquals(3, vendorDTOS.size());
+    }
+
+    @Test
+    public void getVendorById() throws Exception {
+
+        Vendor vendor = new Vendor();
+        vendor.setId(VENDOR_ID);
+        vendor.setName(VENDOR);
+
+        //when
+        when(vendorRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(vendor));
+
+        VendorDTO vendorDTO = vendorService.getVendorById(VENDOR_ID);
+
+        assertEquals(VENDOR,vendor.getName());
+
     }
 }

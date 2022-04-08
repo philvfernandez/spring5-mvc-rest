@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -23,6 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,5 +74,19 @@ public class VendorControllerTest extends AbstractRestControllerTest{
               .contentType(MediaType.APPLICATION_JSON))
               .andExpect(status().isOk())
               .andExpect(jsonPath("$.vendors", hasSize(2)));
+    }
+
+    @Test
+    public void getVendorById() throws Exception {
+        VendorDTO vendor1 = new VendorDTO();
+        vendor1.setId(ID);
+        vendor1.setName(NAME1);
+
+        when(vendorService.getVendorById(anyLong())).thenReturn(vendor1);
+
+        mockMvc.perform(get("/api/v1/vendors/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", equalTo(1)));
     }
 }

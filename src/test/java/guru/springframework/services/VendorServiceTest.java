@@ -5,6 +5,7 @@ import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.VendorDTO;
 import guru.springframework.domain.Vendor;
 import guru.springframework.repositories.VendorRepository;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,8 +18,12 @@ import static org.mockito.Mockito.when;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 
+import org.hamcrest.MatcherAssert.*;
 
 public class VendorServiceTest {
 
@@ -64,5 +69,26 @@ public class VendorServiceTest {
 
         assertEquals(VENDOR,vendor.getName());
 
+    }
+
+    @Test
+    public void createNewVendor() throws Exception {
+        //given
+        VendorDTO vendorDTO = new VendorDTO();
+        vendorDTO.setName(VENDOR);
+
+        Vendor vendor = new Vendor();
+        vendor.setName(VENDOR);
+        vendor.setId(VENDOR_ID);
+
+        given(vendorRepository.save(any(Vendor.class))).willReturn(vendor);
+
+        //when
+        VendorDTO savedVendorDTO = vendorService.createNewVendor(vendorDTO);
+
+        //then
+        //'should' defaults to times = 1
+        then(vendorRepository).should().save(any(Vendor.class));
+        assertThat(savedVendorDTO.getVendorUrl(),savedVendorDTO.getVendorUrl().contains("1"));
     }
 }

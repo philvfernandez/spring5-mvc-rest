@@ -16,8 +16,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.validateMockitoUsage;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
@@ -88,5 +92,26 @@ public class VendorControllerTest extends AbstractRestControllerTest{
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(1)));
+    }
+
+    @Test
+    public void createNewVendor() throws Exception {
+        VendorDTO vendor = new VendorDTO();
+        vendor.setName(NAME1);
+
+        VendorDTO returnDTO = new VendorDTO();
+        returnDTO.setName(vendor.getName());
+        returnDTO.setVendorUrl("/api/v1/vendors/3");
+
+        when(vendorService.createNewVendor(vendor)).thenReturn(returnDTO);
+
+        //when/then
+        mockMvc.perform(post("/api/v1/vendors/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(vendor)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(NAME1)))
+                .andExpect(jsonPath("$.vendor_url", equalTo("/api/v1/vendors/3")));
+
     }
 }

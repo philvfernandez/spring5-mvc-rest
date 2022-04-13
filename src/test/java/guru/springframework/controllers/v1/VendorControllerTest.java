@@ -5,6 +5,7 @@ import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.VendorDTO;
 import guru.springframework.controllers.RestResponseEntityExceptionHandler;
 import guru.springframework.repositories.VendorRepository;
+import guru.springframework.services.ResourceNotFoundException;
 import guru.springframework.services.VendorService;
 import guru.springframework.services.VendorServiceImpl;
 import org.junit.Before;
@@ -21,7 +22,7 @@ import static org.mockito.BDDMockito.then;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.validateMockitoUsage;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
@@ -30,7 +31,6 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -114,4 +114,13 @@ public class VendorControllerTest extends AbstractRestControllerTest{
                 .andExpect(jsonPath("$.vendor_url", equalTo("/api/v1/vendors/3")));
 
     }
+
+    @Test
+    public void testDeleteVendor() throws Exception {
+        when(vendorService.getVendorById(anyLong())).thenThrow(ResourceNotFoundException.class);
+        mockMvc.perform(delete("/api/v1/vendors/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }

@@ -14,14 +14,12 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 import org.hamcrest.MatcherAssert.*;
 
@@ -90,5 +88,13 @@ public class VendorServiceTest {
         //'should' defaults to times = 1
         then(vendorRepository).should().save(any(Vendor.class));
         assertThat(savedVendorDTO.getVendorUrl(),savedVendorDTO.getVendorUrl().contains("1"));
+    }
+
+    @Test
+    public void deleteVendorById() throws Exception {
+        Long id = 1L;
+
+        vendorService.deleteVendorById(id);
+        verify(vendorRepository, times(1)).deleteById(anyLong());
     }
 }

@@ -15,6 +15,7 @@
     <description>Spring 5 MVC Rest Example Project</description>
     <properties>
         <java.version>11</java.version>
+        <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
     </properties>
     <dependencies>
         <dependency>
@@ -54,6 +55,17 @@
             <artifactId>mapstruct</artifactId>
             <version>1.4.2.Final</version>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

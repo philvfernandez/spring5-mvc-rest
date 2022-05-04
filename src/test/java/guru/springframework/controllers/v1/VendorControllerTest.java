@@ -4,6 +4,7 @@ import com.sun.xml.bind.v2.model.core.ID;
 import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.VendorDTO;
 import guru.springframework.controllers.RestResponseEntityExceptionHandler;
+import guru.springframework.domain.Vendor;
 import guru.springframework.repositories.VendorRepository;
 import guru.springframework.services.ResourceNotFoundException;
 import guru.springframework.services.VendorService;
@@ -17,11 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -41,6 +40,7 @@ public class VendorControllerTest extends AbstractRestControllerTest{
 
     public static final long ID2 = 2L;
     public static final String NAME2 = "Comcast";
+    public static final String VENDOR_1 = "Vendor 1";
 
     @Mock
     VendorService vendorService;
@@ -63,11 +63,9 @@ public class VendorControllerTest extends AbstractRestControllerTest{
     @Test
     public void testListVendors() throws Exception {
         VendorDTO vendor1 = new VendorDTO();
-        vendor1.setId(ID);
         vendor1.setName(NAME1);
 
         VendorDTO vendor2 = new VendorDTO();
-        vendor2.setId(ID2);
         vendor2.setName(NAME2);
 
         List<VendorDTO> vendors = Arrays.asList(vendor1, vendor2);
@@ -83,7 +81,6 @@ public class VendorControllerTest extends AbstractRestControllerTest{
     @Test
     public void getVendorById() throws Exception {
         VendorDTO vendor1 = new VendorDTO();
-        vendor1.setId(ID);
         vendor1.setName(NAME1);
 
         when(vendorService.getVendorById(anyLong())).thenReturn(vendor1);
@@ -91,7 +88,7 @@ public class VendorControllerTest extends AbstractRestControllerTest{
         mockMvc.perform(get("/api/v1/vendors/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", equalTo(1)));
+                .andExpect(jsonPath("$.name", equalTo(vendor1.getName())));
     }
 
     @Test
@@ -121,6 +118,47 @@ public class VendorControllerTest extends AbstractRestControllerTest{
         mockMvc.perform(delete("/api/v1/vendors/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testPatchVendor() throws Exception {
+
+        //given
+        VendorDTO vendor = new VendorDTO();
+        vendor.setName(VENDOR_1);
+
+        VendorDTO returnDTO = new VendorDTO();
+        returnDTO.setName(vendor.getName());
+        //returnDTO.setId(vendor.getId());
+        returnDTO.setVendorUrl("/api/v1/vendors/1");
+
+        when(vendorService.patchVendor(anyLong(), any(VendorDTO.class))).thenReturn(returnDTO);
+
+        mockMvc.perform(patch("/api/v1/vendors/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(vendor)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo(vendor.getName())));
+    }
+
+    @Test
+    public void testUpdateVendor() throws Exception {
+
+        //given
+        VendorDTO vendorDTO = new VendorDTO();
+        vendorDTO.setName("A Vendor");
+
+        VendorDTO returnDTO = new VendorDTO();
+        returnDTO.setName(vendorDTO.getName());
+
+        when(vendorService.saveVendorByDTO(anyLong(), any(VendorDTO.class))).thenReturn(returnDTO);
+
+        mockMvc.perform(put("/api/v1/vendors/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(vendorDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo("A Vendor")));
+
     }
 
 }

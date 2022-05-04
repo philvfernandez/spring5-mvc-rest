@@ -61,4 +61,28 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public void deleteVendorById(Long id) { vendorRepository.deleteById(id);}
 
+    @Override
+    public VendorDTO patchVendor(Long id, VendorDTO vendorDTO) {
+        return vendorRepository.findById(id).map(vendor -> {
+            if(vendorDTO.getName() != null) {
+                vendor.setName(vendorDTO.getName());
+            }
+
+            if(vendorDTO.getName() != null) {
+                vendor.setName(vendorDTO.getName());
+            }
+
+            VendorDTO returnDTO = vendorMapper.vendorToVendorDTO(vendorRepository.save(vendor));
+            returnDTO.setVendorUrl("/api/v1/controller/" + id);
+            return returnDTO;
+        }).orElseThrow(RuntimeException::new); //TODO: implement better exception handling
+    }
+
+    @Override
+    public VendorDTO saveVendorByDTO(Long id, VendorDTO vendorDTO) {
+
+        Vendor vendorToSave = vendorMapper.vendorDtoToVendor(vendorDTO);
+        vendorToSave.setId(id);
+        return saveAndReturnDTO(vendorToSave);
+    }
 }

@@ -31,7 +31,7 @@ public class VendorController {
     }
 
     @PostMapping
-    public ResponseEntity<VendorDTO> createNewCustomer(@RequestBody VendorDTO vendorDTO) {
+    public ResponseEntity<VendorDTO> createNewVendor(@RequestBody VendorDTO vendorDTO) {
         return new ResponseEntity<VendorDTO>(vendorService.createNewVendor(vendorDTO),
                 HttpStatus.OK);
     }
@@ -41,5 +41,19 @@ public class VendorController {
         vendorService.deleteVendorById(id);
 
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<VendorDTO> patchVendor(@PathVariable Long id, @RequestBody VendorDTO vendorDTO) {
+        return new ResponseEntity<VendorDTO>(vendorService.patchVendor(id, vendorDTO),
+        HttpStatus.OK);
+        //return vendorService.saveVendorByDTO(id, vendorDTO);
+    }
+
+    @PutMapping({"/{id}"})
+    public ResponseEntity<VendorDTO> updateVendor(@PathVariable Long id, @RequestBody VendorDTO vendorDTO) {
+        return new ResponseEntity<VendorDTO>(vendorService.saveVendorByDTO(id, vendorDTO),
+                HttpStatus.OK);
     }
 }

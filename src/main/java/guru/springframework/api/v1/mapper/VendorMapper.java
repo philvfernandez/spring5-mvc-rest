@@ -13,7 +13,7 @@ public interface VendorMapper {
 
     VendorMapper INSTANCE = Mappers.getMapper(VendorMapper.class);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
     VendorDTO vendorToVendorDTO(Vendor vendor);
 
     Vendor vendorDtoToVendor(VendorDTO vendorDTO);

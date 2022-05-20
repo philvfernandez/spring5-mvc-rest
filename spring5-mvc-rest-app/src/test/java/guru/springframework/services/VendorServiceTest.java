@@ -1,11 +1,9 @@
 package guru.springframework.services;
 
-import com.sun.xml.bind.v2.model.core.ID;
 import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.VendorDTO;
 import guru.springframework.domain.Vendor;
 import guru.springframework.repositories.VendorRepository;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,12 +17,10 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 
 

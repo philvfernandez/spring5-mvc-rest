@@ -1,6 +1,5 @@
 package guru.springframework.controllers.v1;
 
-import com.sun.xml.bind.v2.model.core.ID;
 import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.VendorDTO;
 import guru.springframework.controllers.RestResponseEntityExceptionHandler;
@@ -21,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 

@@ -3,6 +3,7 @@ package guru.springframework.services;
 import guru.springframework.api.v1.mapper.CategoryMapper;
 import guru.springframework.api.v1.model.CategoryDTO;
 import guru.springframework.repositories.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class CateogryServiceImpl implements CategoryService{
 
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
+
 
     public CateogryServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository) {
         this.categoryMapper = categoryMapper;

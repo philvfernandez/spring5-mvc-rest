@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -92,7 +92,7 @@ public class VendorServiceTest {
         //then
         //'should' defaults to times = 1
         then(vendorRepository).should().save(any(Vendor.class));
-        assertThat(savedVendorDTO.getVendorUrl(),savedVendorDTO.getVendorUrl().contains("1"));
+        assertThat(savedVendorDTO.getVendorUrl(), containsString("1"));
     }
 
     @Test

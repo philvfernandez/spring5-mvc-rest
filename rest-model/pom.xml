@@ -12,8 +12,47 @@
 
     <parent>
         <groupId>guru.springframework</groupId>
-        <version/>
-        <artifactId></artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>spring5-mvc-rest-parent</artifactId>
     </parent>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/jaxb2-maven-plugin -->
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jaxb2-maven-plugin</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>guru.springframework</groupId>
+            <artifactId>spring5-mvc-rest-app</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- The package of your generated sources -->
+                    <packageName>guru.springframework.model</packageName>
+                    <sources>
+                        <source>src/main/resources/xsd</source>
+                    </sources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

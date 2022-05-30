@@ -1,8 +1,8 @@
 package guru.springframework.services;
 
 import guru.springframework.api.v1.mapper.CustomerMapper;
-import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.domain.Customer;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,51 +18,78 @@ import static org.mockito.Mockito.*;
 
 public class CustomerServiceTest {
 
-    public static final Long ID = 1l;
-    public static final String FIRSTNAME = "Isabella";
-    public static final String LASTNAME = "Fernandez";
-    public static final String CUSTOMER_URL = "ATestURL";
-    CustomerService customerService;
-
     @Mock
     CustomerRepository customerRepository;
+
+    CustomerMapper customerMapper = CustomerMapper.INSTANCE;
+
+    CustomerService customerService;
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
+        customerService = new CustomerServiceImpl(customerMapper, customerRepository);
     }
 
     @Test
     public void getAllCustomers() throws Exception {
         //given
-        List<Customer> customers = Arrays.asList(new Customer(), new Customer(), new Customer());
+        Customer customer1 = new Customer();
+        customer1.setId(1l);
+        customer1.setFirstname("Phil");
+        customer1.setLastname("Fernandez");
 
-        when(customerRepository.findAll()).thenReturn(customers);
+        Customer customer2 = new Customer();
+        customer2.setId(2l);
+        customer2.setFirstname("Tawnee");
+        customer2.setLastname("Fernandez");
+
+        when(customerRepository.findAll()).thenReturn(Arrays.asList(customer1, customer2));
 
         //when
         List<CustomerDTO> customerDTOS = customerService.getAllCustomers();
 
         //then
-        assertEquals(3, customerDTOS.size());
+        assertEquals(2, customerDTOS.size());
     }
 
     @Test
     public void getCustomerById() throws Exception {
 
         Customer customer = new Customer();
-        customer.setId(ID);
-        customer.setFirstname(FIRSTNAME);
-        customer.setLastname(LASTNAME);
-        customer.setCustomerUrl(CUSTOMER_URL);
+        customer.setId(1l);
+        customer.setFirstname("Isabella");
+        customer.setLastname("Fernandez");
 
         //when
         when(customerRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(customer));
 
-        CustomerDTO customerDTO = customerService.getCustomerById(ID);
+        CustomerDTO customerDTO = customerService.getCustomerById(1l);
 
-        assertEquals(FIRSTNAME,customer.getFirstname());
+        assertEquals("Isabella",customer.getFirstname());
+    }
+
+    @Test
+    public void createNewCustomer() throws Exception {
+        //given
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstname("Isabella");
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setFirstname(customerDTO.getFirstname());
+        savedCustomer.setLastname(customerDTO.getLastname());
+        savedCustomer.setId(1l);
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+        //when
+        CustomerDTO savedDto = customerService.createNewCustomer(customerDTO);
+
+        //then
+        assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
+        assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
     }
 
     @Test

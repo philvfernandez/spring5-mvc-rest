@@ -21,16 +21,19 @@ public class CategoryServiceTest {
 
     public static final Long ID = 2L;
     public static final String NAME = "Jimmy";
-    CategoryService categoryService;
 
     @Mock
     CategoryRepository categoryRepository;
+
+    CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
+
+    CategoryService categoryService;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        categoryService = new CateogryServiceImpl(CategoryMapper.INSTANCE, categoryRepository);
+        categoryService = new CateogryServiceImpl(categoryMapper, categoryRepository);
     }
 
     @Test

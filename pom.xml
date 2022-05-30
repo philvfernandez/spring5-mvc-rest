@@ -25,10 +25,13 @@
     </modules>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
     </properties>
 
+
+
+    <!--
     <repositories>
         <repository>
             <id>spring-snapshots</id>
@@ -52,7 +55,7 @@
         <pluginRepository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
+            <url>https://repo.spring.io/native/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -65,6 +68,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories> -->
 
 </project>

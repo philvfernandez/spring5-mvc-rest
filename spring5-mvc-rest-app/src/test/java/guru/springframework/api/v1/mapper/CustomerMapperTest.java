@@ -1,7 +1,7 @@
 package guru.springframework.api.v1.mapper;
 
-import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.domain.Customer;
+import guru.springframework.model.CustomerDTO;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -28,7 +28,7 @@ public class CustomerMapperTest {
         CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
 
         //then
-        assertEquals(Long.valueOf(ID), customerDTO.getId());
+        assertEquals(Long.valueOf(ID), customer.getId());
 
     }
 }
